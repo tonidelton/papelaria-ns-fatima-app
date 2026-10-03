@@ -3,13 +3,14 @@ import { colors, borderRadius, shadows, spacing } from '../theme';
 
 interface ButtonProps {
   children: React.ReactNode;
-  onPress: () => void;
+  onPress?: () => void;
   variant?: 'primary' | 'secondary' | 'cta' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
   disabled?: boolean;
   loading?: boolean;
   className?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export default function Button({

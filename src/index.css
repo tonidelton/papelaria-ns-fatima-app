@@ -111,3 +111,29 @@ input:focus {
     font-size: 14px;
   }
 }
+
+/* Print styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+  
+  header, footer, nav, .no-print, button, .print\:hidden {
+    display: none !important;
+  }
+  
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  .print\:border-black {
+    border-color: black !important;
+  }
+  
+  @page {
+    margin: 1.5cm;
+  }
+}

@@ -1,104 +1,94 @@
-import React, { useState, useCallback } from 'react';
-import { AuthProvider } from './contexts/AuthContext';
-import SplashScreen from './pages/SplashScreen';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { CartProvider } from './contexts/CartContext';
+import MainLayout from './layouts/MainLayout';
+import PanelLayout from './layouts/PanelLayout';
 import HomePage from './pages/HomePage';
-import ServicosPage from './pages/ServicosPage';
-import ContatoPage from './pages/ContatoPage';
+import ProdutosPage from './pages/ProdutosPage';
+import ProdutoDetalhePage from './pages/ProdutoDetalhePage';
+import CarrinhoPage from './pages/CarrinhoPage';
+import CheckoutPage from './pages/CheckoutPage';
 import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ContaPage from './pages/ContaPage';
+import CadastroPage from './pages/CadastroPage';
+import MinhaContaPage from './pages/MinhaContaPage';
+import ServicosPage from './pages/ServicosPage';
 import SobrePage from './pages/SobrePage';
-import BottomNav from './components/BottomNav';
-import SidebarNav from './components/SidebarNav';
+import ContatoPage from './pages/ContatoPage';
+import PainelDashboard from './pages/painel/DashboardPage';
+import PainelPedidos from './pages/painel/PedidosPage';
+import PainelProdutos from './pages/painel/ProdutosPage';
+import PainelImportar from './pages/painel/ImportarPage';
+import SplashScreen from './pages/SplashScreen';
+import { registerServiceWorker } from './lib/sw';
 
-type Page = 'inicio' | 'servicos' | 'contato' | 'login' | 'cadastro' | 'conta' | 'sobre';
-type TabType = 'inicio' | 'servicos' | 'contato' | 'conta';
+function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
+  const { isAuthenticated, userProfile, loading } = useAuth();
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (roles && userProfile && !roles.includes(userProfile.role)) return <Navigate to="/" replace />;
+  return <>{children}</>;
+}
 
-function AppContent() {
+function AppRoutes() {
   const [showSplash, setShowSplash] = useState(true);
-  const [currentPage, setCurrentPage] = useState<Page>('inicio');
-  const [activeTab, setActiveTab] = useState<TabType>('inicio');
 
-  const handleSplashFinish = useCallback(() => {
-    setShowSplash(false);
+  useEffect(() => {
+    registerServiceWorker();
+    const timer = setTimeout(() => setShowSplash(false), 2000);
+    return () => clearTimeout(timer);
   }, []);
 
-  const handleNavigate = useCallback((page: string) => {
-    setCurrentPage(page as Page);
-    // Update active tab if navigating to a tab page
-    if (['inicio', 'servicos', 'contato'].includes(page)) {
-      setActiveTab(page as TabType);
-    }
-    if (page === 'conta') {
-      setActiveTab('conta');
-    }
-  }, []);
-
-  const handleTabChange = useCallback((tab: TabType) => {
-    setActiveTab(tab);
-    setCurrentPage(tab as Page);
-  }, []);
-
-  if (showSplash) {
-    return <SplashScreen onFinish={handleSplashFinish} />;
-  }
-
-  const showBottomNav = ['inicio', 'servicos', 'contato', 'conta', 'login'].includes(currentPage);
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'inicio':
-        return <HomePage onNavigate={handleNavigate} />;
-      case 'servicos':
-        return <ServicosPage />;
-      case 'contato':
-        return <ContatoPage />;
-      case 'login':
-        return <LoginPage onNavigate={handleNavigate} />;
-      case 'cadastro':
-        return <RegisterPage onNavigate={handleNavigate} />;
-      case 'conta':
-        return <ContaPage onNavigate={handleNavigate} />;
-      case 'sobre':
-        return <SobrePage onBack={() => handleNavigate('inicio')} />;
-      default:
-        return <HomePage onNavigate={handleNavigate} />;
-    }
-  };
+  if (showSplash) return <SplashScreen onFinish={() => setShowSplash(false)} />;
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] relative">
-      {/* Sidebar navigation - desktop */}
-      {showBottomNav && (
-        <div className="hidden lg:block">
-          <SidebarNav activeTab={activeTab} onTabChange={handleTabChange} />
-        </div>
-      )}
+    <Routes>
+      {/* Main public routes */}
+      <Route element={<MainLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="produtos" element={<ProdutosPage />} />
+        <Route path="produtos/:slug" element={<ProdutoDetalhePage />} />
+        <Route path="carrinho" element={<CarrinhoPage />} />
+        <Route path="checkout" element={<CheckoutPage />} />
+        <Route path="servicos" element={<ServicosPage />} />
+        <Route path="sobre" element={<SobrePage />} />
+        <Route path="contato" element={<ContatoPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="cadastro" element={<CadastroPage />} />
+        <Route path="minha-conta" element={
+          <ProtectedRoute><MinhaContaPage /></ProtectedRoute>
+        } />
+        <Route path="minha-conta/*" element={
+          <ProtectedRoute><MinhaContaPage /></ProtectedRoute>
+        } />
+      </Route>
 
-      {/* Main content area */}
-      <div className={`min-h-screen ${showBottomNav ? 'lg:ml-64' : ''}`}>
-        <div className="max-w-lg mx-auto lg:max-w-4xl xl:max-w-5xl">
-          {/* Page content */}
-          <main className="min-h-screen">
-            {renderPage()}
-          </main>
-        </div>
-      </div>
+      {/* Panel routes (admin/operador) */}
+      <Route path="painel" element={
+        <ProtectedRoute roles={['admin', 'operador']}>
+          <PanelLayout />
+        </ProtectedRoute>
+      }>
+        <Route index element={<PainelDashboard />} />
+        <Route path="pedidos" element={<PainelPedidos />} />
+        <Route path="produtos" element={<PainelProdutos />} />
+        <Route path="importar" element={<PainelImportar />} />
+      </Route>
 
-      {/* Bottom navigation - mobile only */}
-      {showBottomNav && (
-        <div className="lg:hidden">
-          <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
-        </div>
-      )}
-    </div>
+      {/* Fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <CartProvider>
+          <AppRoutes />
+        </CartProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
