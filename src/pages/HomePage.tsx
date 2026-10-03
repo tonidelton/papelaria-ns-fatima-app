@@ -1,22 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import { useCart } from '../contexts/CartContext';
+import { mockProducts, productEmojis } from '../data/mockData';
 import { Product } from '../types';
 
-const mockProducts: Product[] = [
-  { id: '1', categoriaId: '1', nome: 'Caderno Universitário 200fls', slug: 'caderno-universitario', descricao: 'Caderno universitário capa dura', preco: 28.90, precoCusto: 18, estoque: 50, destaque: true, ativo: true, imagemUrl: '', criadoEm: new Date(), atualizadoEm: new Date() },
-  { id: '2', categoriaId: '1', nome: 'Caneta Esferográfica cx/50', slug: 'caneta-esferografica', descricao: 'Caixa com 50 canetas azuis', preco: 45.00, precoCusto: 28, estoque: 30, destaque: true, ativo: true, imagemUrl: '', criadoEm: new Date(), atualizadoEm: new Date() },
-  { id: '3', categoriaId: '2', nome: 'Papel A4 Resma 500fls', slug: 'papel-a4', descricao: 'Resma de papel A4 75g/m²', preco: 24.90, precoCusto: 16, estoque: 100, destaque: true, ativo: true, imagemUrl: '', criadoEm: new Date(), atualizadoEm: new Date() },
-  { id: '4', categoriaId: '2', nome: 'Pasta Arquivo Morto', slug: 'pasta-arquivo', descricao: 'Pasta arquivo morto polionda', preco: 8.50, precoCusto: 4.5, estoque: 80, destaque: true, ativo: true, imagemUrl: '', criadoEm: new Date(), atualizadoEm: new Date() },
-  { id: '5', categoriaId: '3', nome: 'Kit Canetinha 12 cores', slug: 'kit-canetinha', descricao: 'Kit 12 canetinhas coloridas', preco: 15.90, precoCusto: 9, estoque: 40, destaque: true, ativo: true, imagemUrl: '', criadoEm: new Date(), atualizadoEm: new Date() },
-  { id: '6', categoriaId: '3', nome: 'Cola Bastão 40g', slug: 'cola-bastao', descricao: 'Cola bastão não tóxica', preco: 5.90, precoCusto: 3, estoque: 60, destaque: true, ativo: true, imagemUrl: '', criadoEm: new Date(), atualizadoEm: new Date() },
-];
-
-const emojis: Record<string, string> = { '1': '📓', '2': '🖊️', '3': '📄', '4': '📁', '5': '🖍️', '6': '📌' };
+const featuredProducts = mockProducts.filter((p) => p.destaque && p.ativo);
 
 export default function HomePage() {
   const { addItem } = useCart();
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const handleAddToCart = (product: Product) => {
+    const result = addItem(product);
+    if (result.success) {
+      setToast({ message: `${product.nome} adicionado ao carrinho!`, type: 'success' });
+    } else {
+      setToast({ message: result.message || 'Erro ao adicionar', type: 'error' });
+    }
+    setTimeout(() => setToast(null), 3000);
+  };
 
   return (
     <div>
@@ -57,13 +60,18 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-          {mockProducts.map((p) => (
+          {featuredProducts.map((p) => (
             <Card key={p.id} shadow="sm" className="overflow-hidden p-0 group">
               <Link to={`/produtos/${p.slug}`} className="block">
-                <div className="bg-[#F8F9FA] h-28 sm:h-32 lg:h-36 flex items-center justify-center">
+                <div className="bg-[#F8F9FA] h-28 sm:h-32 lg:h-36 flex items-center justify-center relative">
                   <span className="text-4xl sm:text-5xl group-hover:scale-110 transition-transform">
-                    {emojis[p.id] || '📦'}
+                    {productEmojis[p.id] || '📦'}
                   </span>
+                  {p.estoque === 0 && (
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                      <span className="bg-[#C62828] text-white text-xs font-bold px-2 py-1 rounded">ESGOTADO</span>
+                    </div>
+                  )}
                 </div>
               </Link>
               <div className="p-3">
@@ -77,8 +85,9 @@ export default function HomePage() {
                     R$ {p.preco.toFixed(2).replace('.', ',')}
                   </span>
                   <button
-                    onClick={() => addItem(p)}
-                    className="bg-[#FF8C42] text-white w-7 h-7 rounded-full flex items-center justify-center hover:bg-[#E67A30] active:scale-90 transition-all shadow-sm"
+                    onClick={() => handleAddToCart(p)}
+                    disabled={p.estoque === 0}
+                    className="bg-[#FF8C42] text-white w-7 h-7 rounded-full flex items-center justify-center hover:bg-[#E67A30] active:scale-90 transition-all shadow-sm disabled:bg-[#999] disabled:cursor-not-allowed"
                     aria-label="Adicionar ao carrinho"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -134,6 +143,15 @@ export default function HomePage() {
           </a>
         </div>
       </section>
+
+      {/* Toast */}
+      {toast && (
+        <div className={`fixed bottom-20 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg z-50 text-sm font-medium ${
+          toast.type === 'success' ? 'bg-[#2E7D32] text-white' : 'bg-[#C62828] text-white'
+        }`}>
+          {toast.message}
+        </div>
+      )}
     </div>
   );
 }

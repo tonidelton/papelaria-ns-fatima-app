@@ -9,6 +9,7 @@ import ProdutosPage from './pages/ProdutosPage';
 import ProdutoDetalhePage from './pages/ProdutoDetalhePage';
 import CarrinhoPage from './pages/CarrinhoPage';
 import CheckoutPage from './pages/CheckoutPage';
+import PedidoConfirmacaoPage from './pages/PedidoConfirmacaoPage';
 import LoginPage from './pages/LoginPage';
 import CadastroPage from './pages/CadastroPage';
 import MinhaContaPage from './pages/MinhaContaPage';
@@ -50,14 +51,12 @@ function AppRoutes() {
         <Route path="produtos/:slug" element={<ProdutoDetalhePage />} />
         <Route path="carrinho" element={<CarrinhoPage />} />
         <Route path="checkout" element={<CheckoutPage />} />
+        <Route path="pedido-confirmacao/:orderId" element={<PedidoConfirmacaoPage />} />
         <Route path="servicos" element={<ServicosPage />} />
         <Route path="sobre" element={<SobrePage />} />
         <Route path="contato" element={<ContatoPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="cadastro" element={<CadastroPage />} />
-        <Route path="minha-conta" element={
-          <ProtectedRoute><MinhaContaPage /></ProtectedRoute>
-        } />
         <Route path="minha-conta/*" element={
           <ProtectedRoute><MinhaContaPage /></ProtectedRoute>
         } />

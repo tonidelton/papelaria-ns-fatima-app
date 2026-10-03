@@ -1,92 +1,149 @@
-import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useState } from 'react';
+import { useNavigate, Link, Routes, Route } from 'react-router-dom';
 import Card from '../components/Card';
 import Button from '../components/Button';
-import { useRealtimeCollection } from '../hooks/useRealtime';
-import { Order } from '../types';
+import Input from '../components/Input';
+import { useAuth } from '../contexts/AuthContext';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import MeusPedidosPage from './MeusPedidosPage';
+import PedidoDetalhePage from './PedidoDetalhePage';
 
 export default function MinhaContaPage() {
   const { userProfile, logout } = useAuth();
-  const { data: orders, loading } = useRealtimeCollection<Order>('orders', [], [userProfile?.uid]);
+  const navigate = useNavigate();
+  const [editing, setEditing] = useState(false);
+  const [form, setForm] = useState({
+    nomeCompleto: userProfile?.nomeCompleto || '',
+    telefone: userProfile?.telefone || '',
+    endereco: userProfile?.endereco || '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  const userOrders = orders.filter(o => o.clienteId === userProfile?.uid);
+  const handleSave = async () => {
+    if (!userProfile) return;
+    setLoading(true);
+    try {
+      await updateDoc(doc(db, 'users', userProfile.uid), {
+        nomeCompleto: form.nomeCompleto,
+        telefone: form.telefone,
+        endereco: form.endereco,
+      });
+      setSuccess(true);
+      setEditing(false);
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err) {
+      console.error('Erro ao atualizar perfil:', err);
+      alert('Erro ao atualizar perfil');
+    }
+    setLoading(false);
+  };
 
-  const handlePrint = () => {
-    window.print();
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 lg:px-6 py-6 sm:py-8">
-      <h1 className="text-2xl sm:text-3xl font-bold text-[#333333] mb-6">Minha Conta</h1>
+    <Routes>
+      <Route index element={
+        <div className="max-w-4xl mx-auto px-4 lg:px-6 py-6 sm:py-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#333] mb-6">Minha Conta</h1>
 
-      {/* Perfil */}
-      <Card shadow="md" className="p-4 sm:p-6 mb-6">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-[#25B4D2] rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-xl">
-              {userProfile?.nomeCompleto?.charAt(0) || 'U'}
-            </span>
-          </div>
-          <div className="flex-1">
-            <h2 className="text-lg font-bold text-[#333333]">{userProfile?.nomeCompleto}</h2>
-            <p className="text-sm text-[#666666]">{userProfile?.email}</p>
-            <p className="text-sm text-[#666666]">{userProfile?.telefone}</p>
-            <span className="inline-block mt-1 text-xs bg-[#E8F7FB] text-[#25B4D2] px-2 py-0.5 rounded-full font-medium">
-              {userProfile?.tipo === 'empresa' ? '🏢 Empresa' : '👤 Pessoa Física'}
-            </span>
-          </div>
-        </div>
-      </Card>
-
-      {/* Pedidos */}
-      <Card shadow="md" className="p-4 sm:p-6 mb-6">
-        <h2 className="text-lg font-bold text-[#333333] mb-4">Meus Pedidos</h2>
-        {loading ? (
-          <p className="text-sm text-[#666666]">Carregando...</p>
-        ) : userOrders.length === 0 ? (
-          <p className="text-sm text-[#666666]">Você ainda não fez nenhum pedido.</p>
-        ) : (
-          <div className="space-y-3">
-            {userOrders.map((order) => (
-              <div key={order.id} className="border border-[#E0E0E0] rounded-lg p-3 sm:p-4 print:border-black">
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <p className="text-sm font-medium text-[#333333]">Pedido #{order.id.slice(0, 8)}</p>
-                    <p className="text-xs text-[#666666]">
-                      {order.criadoEm instanceof Date ? order.criadoEm.toLocaleDateString('pt-BR') : 'Data não disponível'}
-                    </p>
-                  </div>
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                    order.status === 'novo' ? 'bg-[#FFF8E1] text-[#F57F17]' :
-                    order.status === 'separacao' ? 'bg-[#E8F7FB] text-[#25B4D2]' :
-                    order.status === 'concluido' ? 'bg-[#E8F5E9] text-[#2E7D32]' :
-                    'bg-[#F8F9FA] text-[#666666]'
-                  }`}>
-                    {order.status}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-[#666666]">Total:</span>
-                  <span className="text-base font-bold text-[#25B4D2]">
-                    R$ {order.valorTotal?.toFixed(2).replace('.', ',')}
-                  </span>
-                </div>
-                <button
-                  onClick={handlePrint}
-                  className="mt-2 text-xs text-[#25B4D2] font-medium hover:underline print:hidden"
-                >
-                  Imprimir pedido
-                </button>
+          {/* Perfil */}
+          <Card shadow="md" className="p-4 sm:p-6 mb-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-16 h-16 bg-[#25B4D2] rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-xl">
+                  {userProfile?.nomeCompleto?.charAt(0) || 'U'}
+                </span>
               </div>
-            ))}
-          </div>
-        )}
-      </Card>
+              <div className="flex-1">
+                <h2 className="text-lg font-bold text-[#333]">{userProfile?.nomeCompleto}</h2>
+                <p className="text-sm text-[#666]">{userProfile?.email}</p>
+                <span className="inline-block mt-1 text-xs bg-[#E8F7FB] text-[#25B4D2] px-2 py-0.5 rounded-full font-medium">
+                  {userProfile?.tipo === 'empresa' ? '🏢 Empresa' : '👤 Pessoa Física'}
+                </span>
+              </div>
+              <button
+                onClick={() => setEditing(!editing)}
+                className="text-sm text-[#25B4D2] font-medium hover:underline"
+              >
+                {editing ? 'Cancelar' : 'Editar'}
+              </button>
+            </div>
 
-      {/* Ações */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        <Button variant="outline" fullWidth onPress={() => logout()}>Sair da Conta</Button>
-      </div>
-    </div>
+            {editing ? (
+              <div className="space-y-4 pt-4 border-t border-[#E0E0E0]">
+                <Input
+                  label="Nome Completo"
+                  value={form.nomeCompleto}
+                  onChangeText={(v) => setForm({ ...form, nomeCompleto: v })}
+                />
+                <Input
+                  label="Telefone"
+                  value={form.telefone}
+                  onChangeText={(v) => setForm({ ...form, telefone: v })}
+                  type="tel"
+                />
+                <Input
+                  label="Endereço"
+                  value={form.endereco}
+                  onChangeText={(v) => setForm({ ...form, endereco: v })}
+                />
+                <Button variant="primary" fullWidth onPress={handleSave} loading={loading}>
+                  Salvar Alterações
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-2 text-sm pt-4 border-t border-[#E0E0E0]">
+                <div className="flex justify-between">
+                  <span className="text-[#666]">Telefone:</span>
+                  <span className="text-[#333] font-medium">{userProfile?.telefone}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#666]">Endereço:</span>
+                  <span className="text-[#333] font-medium text-right max-w-[200px] truncate">{userProfile?.endereco}</span>
+                </div>
+              </div>
+            )}
+
+            {success && (
+              <div className="mt-4 bg-[#E8F5E9] border border-[#2E7D32]/20 rounded-lg p-3 text-center">
+                <p className="text-sm text-[#2E7D32] font-medium">✓ Perfil atualizado com sucesso!</p>
+              </div>
+            )}
+          </Card>
+
+          {/* Links rápidos */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+            <Link to="/minha-conta/pedidos">
+              <Card shadow="sm" className="p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
+                <span className="text-2xl">📦</span>
+                <div>
+                  <p className="font-medium text-[#333]">Meus Pedidos</p>
+                  <p className="text-xs text-[#666]">Acompanhe seus pedidos</p>
+                </div>
+              </Card>
+            </Link>
+            <Card shadow="sm" className="p-4 flex items-center gap-3">
+              <span className="text-2xl">📋</span>
+              <div>
+                <p className="font-medium text-[#333]">Cotações</p>
+                <p className="text-xs text-[#666]">Em breve</p>
+              </div>
+            </Card>
+          </div>
+
+          {/* Logout */}
+          <Button variant="outline" fullWidth onPress={handleLogout}>
+            Sair da Conta
+          </Button>
+        </div>
+      } />
+      <Route path="pedidos" element={<MeusPedidosPage />} />
+      <Route path="pedidos/:orderId" element={<PedidoDetalhePage />} />
+    </Routes>
   );
 }
