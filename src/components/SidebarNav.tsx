@@ -3,12 +3,12 @@ import { useAuth } from '../contexts/AuthContext';
 
 type TabType = 'inicio' | 'servicos' | 'contato' | 'conta';
 
-interface BottomNavProps {
+interface SidebarNavProps {
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
 }
 
-export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
+export default function SidebarNav({ activeTab, onTabChange }: SidebarNavProps) {
   const { isAuthenticated } = useAuth();
 
   const tabs: { id: TabType; label: string; icon: React.ReactNode }[] = [
@@ -53,25 +53,48 @@ export default function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#E0E0E0] z-50 pb-safe">
-      <div className="max-w-lg mx-auto flex justify-around items-center py-2 sm:py-2.5">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => onTabChange(tab.id)}
-            className={`
-              flex flex-col items-center gap-0.5 sm:gap-1 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg
-              transition-colors duration-200
-              ${activeTab === tab.id 
-                ? 'text-[#25B4D2]' 
-                : 'text-[#999999] hover:text-[#666666]'}
-            `}
-          >
-            {tab.icon}
-            <span className="text-[10px] sm:text-xs font-medium">{tab.label}</span>
-          </button>
-        ))}
+    <aside className="fixed left-0 top-0 bottom-0 w-64 bg-white border-r border-[#E0E0E0] z-40 flex flex-col">
+      {/* Logo */}
+      <div className="p-6 border-b border-[#E0E0E0]">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-[#25B4D2] rounded-full flex items-center justify-center">
+            <span className="text-white font-bold text-lg">PF</span>
+          </div>
+          <div>
+            <h1 className="text-base font-bold text-[#333333] leading-tight">Papelaria</h1>
+            <p className="text-xs text-[#666666] leading-tight">N. Sr.ª de Fátima</p>
+          </div>
+        </div>
       </div>
-    </nav>
+
+      {/* Navigation */}
+      <nav className="flex-1 p-4">
+        <div className="space-y-1">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => onTabChange(tab.id)}
+              className={`
+                w-full flex items-center gap-3 px-4 py-3 rounded-[10px]
+                transition-all duration-200
+                ${activeTab === tab.id 
+                  ? 'bg-[#E8F7FB] text-[#25B4D2] font-semibold' 
+                  : 'text-[#666666] hover:bg-[#F8F9FA] hover:text-[#333333]'}
+              `}
+            >
+              {tab.icon}
+              <span className="text-sm">{tab.label}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      {/* Footer */}
+      <div className="p-4 border-t border-[#E0E0E0]">
+        <p className="text-xs text-[#999999] text-center">
+          © 2024 Papelaria N. Sr.ª de Fátima
+        </p>
+      </div>
+    </aside>
   );
 }

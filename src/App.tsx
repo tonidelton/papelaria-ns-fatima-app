@@ -9,6 +9,7 @@ import RegisterPage from './pages/RegisterPage';
 import ContaPage from './pages/ContaPage';
 import SobrePage from './pages/SobrePage';
 import BottomNav from './components/BottomNav';
+import SidebarNav from './components/SidebarNav';
 
 type Page = 'inicio' | 'servicos' | 'contato' | 'login' | 'cadastro' | 'conta' | 'sobre';
 type TabType = 'inicio' | 'servicos' | 'contato' | 'conta';
@@ -66,15 +67,29 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] max-w-lg mx-auto relative">
-      {/* Page content */}
-      <main className="min-h-screen">
-        {renderPage()}
-      </main>
-
-      {/* Bottom navigation */}
+    <div className="min-h-screen bg-[#F8F9FA] relative">
+      {/* Sidebar navigation - desktop */}
       {showBottomNav && (
-        <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
+        <div className="hidden lg:block">
+          <SidebarNav activeTab={activeTab} onTabChange={handleTabChange} />
+        </div>
+      )}
+
+      {/* Main content area */}
+      <div className={`min-h-screen ${showBottomNav ? 'lg:ml-64' : ''}`}>
+        <div className="max-w-lg mx-auto lg:max-w-4xl xl:max-w-5xl">
+          {/* Page content */}
+          <main className="min-h-screen">
+            {renderPage()}
+          </main>
+        </div>
+      </div>
+
+      {/* Bottom navigation - mobile only */}
+      {showBottomNav && (
+        <div className="lg:hidden">
+          <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
+        </div>
       )}
     </div>
   );

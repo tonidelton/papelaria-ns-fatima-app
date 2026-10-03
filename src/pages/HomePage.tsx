@@ -113,11 +113,11 @@ interface HomePageProps {
 
 export default function HomePage({ onNavigate }: HomePageProps) {
   return (
-    <div className="pb-20">
+    <div className="pb-20 lg:pb-8">
       <Header showLogo />
       
       {/* Banner de boas-vindas */}
-      <div className="mx-4 mt-4 bg-gradient-to-r from-[#25B4D2] to-[#1E9AB3] rounded-[20px] p-5 text-white shadow-lg relative overflow-hidden">
+      <div className="mx-4 lg:mx-6 mt-4 lg:mt-6 bg-gradient-to-r from-[#25B4D2] to-[#1E9AB3] rounded-[20px] p-5 lg:p-8 text-white shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
         <div className="relative z-10">
@@ -135,8 +135,8 @@ export default function HomePage({ onNavigate }: HomePageProps) {
       </div>
 
       {/* Categorias rápidas */}
-      <div className="px-4 mt-6">
-        <h3 className="text-lg font-bold text-[#333333] mb-3">Categorias</h3>
+      <div className="px-4 lg:px-6 mt-6">
+        <h3 className="text-lg lg:text-xl font-bold text-[#333333] mb-3">Categorias</h3>
         <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
           {[
             { nome: 'Escolar', emoji: '🎒' },
@@ -157,24 +157,24 @@ export default function HomePage({ onNavigate }: HomePageProps) {
       </div>
 
       {/* Produtos em destaque */}
-      <div className="px-4 mt-6">
+      <div className="px-4 lg:px-6 mt-6">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-bold text-[#333333]">Produtos em Destaque</h3>
+          <h3 className="text-lg lg:text-xl font-bold text-[#333333]">Produtos em Destaque</h3>
           <button className="text-sm text-[#25B4D2] font-medium">Ver todos</button>
         </div>
         
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {mockProducts.map((product) => (
             <Card key={product.id} shadow="sm" className="overflow-hidden p-0">
-              <div className="bg-[#F8F9FA] h-28 flex items-center justify-center">
-                <span className="text-4xl">{productEmojis[product.id] || '📦'}</span>
+              <div className="bg-[#F8F9FA] h-28 sm:h-32 lg:h-36 flex items-center justify-center">
+                <span className="text-4xl sm:text-5xl">{productEmojis[product.id] || '📦'}</span>
               </div>
               <div className="p-3">
                 <h4 className="text-sm font-medium text-[#333333] line-clamp-2 mb-1">
                   {product.nome}
                 </h4>
                 <div className="flex items-center justify-between">
-                  <span className="text-base font-bold text-[#25B4D2]">
+                  <span className="text-sm sm:text-base font-bold text-[#25B4D2]">
                     R$ {product.preco.toFixed(2).replace('.', ',')}
                   </span>
                   <button className="bg-[#FF8C42] text-white w-7 h-7 rounded-full flex items-center justify-center active:scale-90 transition-transform shadow-sm">
@@ -190,7 +190,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
       </div>
 
       {/* Banner promocional */}
-      <div className="mx-4 mt-6 bg-gradient-to-r from-[#C6A46A] to-[#A8894F] rounded-[20px] p-5 text-white shadow-lg relative overflow-hidden">
+      <div className="mx-4 lg:mx-6 mt-6 bg-gradient-to-r from-[#C6A46A] to-[#A8894F] rounded-[20px] p-5 lg:p-8 text-white shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-1/3 translate-x-1/3" />
         <div className="relative z-10">
           <span className="text-xs font-bold bg-white/20 px-2 py-0.5 rounded-full">PROMOÇÃO</span>
@@ -202,7 +202,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
       </div>
 
       {/* Sobre rápido */}
-      <div className="px-4 mt-6 mb-4">
+      <div className="px-4 lg:px-6 mt-6 mb-4">
         <Card shadow="sm">
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 bg-[#E8F7FB] rounded-full flex items-center justify-center flex-shrink-0">

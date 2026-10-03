@@ -121,10 +121,10 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
   }
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 lg:pb-8">
       <Header title="Entrar" showBack onBack={() => onNavigate('inicio')} />
       
-      <div className="px-4 py-6">
+      <div className="px-4 lg:px-6 py-6 max-w-md mx-auto">
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-20 h-20 bg-[#25B4D2] rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">

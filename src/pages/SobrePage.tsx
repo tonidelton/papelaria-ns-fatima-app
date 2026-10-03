@@ -8,10 +8,10 @@ interface SobrePageProps {
 
 export default function SobrePage({ onBack }: SobrePageProps) {
   return (
-    <div className="pb-20">
+    <div className="pb-20 lg:pb-8">
       <Header title="Sobre Nós" showBack onBack={onBack || (() => window.history.back())} />
       
-      <div className="px-4 py-6">
+      <div className="px-4 lg:px-6 py-6">
         {/* Logo e nome */}
         <div className="text-center mb-6">
           <div className="w-20 h-20 bg-[#25B4D2] rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
@@ -74,7 +74,7 @@ export default function SobrePage({ onBack }: SobrePageProps) {
           <h3 className="font-bold text-[#333333] mb-3 flex items-center gap-2">
             <span className="text-lg">🏆</span> Por que nos escolher?
           </h3>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               { num: '1000+', label: 'Produtos' },
               { num: '15+', label: 'Anos de mercado' },

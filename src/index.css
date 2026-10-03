@@ -85,3 +85,29 @@ input:focus {
     background: #999;
   }
 }
+
+/* Responsive adjustments */
+@media (min-width: 1024px) {
+  body {
+    font-size: 16px;
+  }
+  
+  /* Larger screens can show more content */
+  .max-w-lg {
+    max-width: 100%;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 1023px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+/* Small mobile adjustments */
+@media (max-width: 374px) {
+  body {
+    font-size: 14px;
+  }
+}

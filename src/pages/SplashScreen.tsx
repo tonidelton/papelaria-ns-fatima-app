@@ -22,7 +22,7 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
       
       {/* Logo */}
       <div className="relative z-10 flex flex-col items-center animate-fade-in">
-        <div className="w-28 h-28 bg-white rounded-full flex items-center justify-center shadow-xl mb-6 overflow-hidden">
+        <div className="w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 bg-white rounded-full flex items-center justify-center shadow-xl mb-6 overflow-hidden">
           <img 
             src="https://image.qwenlm.ai/generated-images/35cff78a-5461-43c7-a5d9-ff1b0f0673b5/_result.png" 
             alt="Logo Papelaria N. Sr.ª de Fátima" 
@@ -30,10 +30,10 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
           />
         </div>
         
-        <h1 className="text-white text-2xl font-bold text-center mb-1">
+        <h1 className="text-white text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-1">
           Papelaria
         </h1>
-        <h2 className="text-white/90 text-lg font-medium text-center">
+        <h2 className="text-white/90 text-lg sm:text-xl lg:text-2xl font-medium text-center">
           N. Sr.ª de Fátima
         </h2>
         

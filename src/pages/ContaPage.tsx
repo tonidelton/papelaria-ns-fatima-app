@@ -13,9 +13,9 @@ export default function ContaPage({ onNavigate }: ContaPageProps) {
 
   if (!isAuthenticated) {
     return (
-      <div className="pb-20">
+      <div className="pb-20 lg:pb-8">
         <Header title="Minha Conta" />
-        <div className="px-4 py-12 text-center">
+        <div className="px-4 lg:px-6 py-12 text-center max-w-md mx-auto">
           <div className="w-20 h-20 bg-[#E8F7FB] rounded-full flex items-center justify-center mx-auto mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#25B4D2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -54,10 +54,10 @@ export default function ContaPage({ onNavigate }: ContaPageProps) {
   ];
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 lg:pb-8">
       <Header title="Minha Conta" />
       
-      <div className="px-4 py-6">
+      <div className="px-4 lg:px-6 py-6 max-w-2xl mx-auto">
         {/* Perfil */}
         <Card shadow="md" className="mb-4">
           <div className="flex items-center gap-4">

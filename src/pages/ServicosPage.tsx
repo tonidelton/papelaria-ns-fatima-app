@@ -63,11 +63,11 @@ const services = [
 
 export default function ServicosPage() {
   return (
-    <div className="pb-20">
+    <div className="pb-20 lg:pb-8">
       <Header title="Nossos Serviços" />
       
       {/* Header decorativo */}
-      <div className="bg-gradient-to-b from-[#25B4D2] to-[#F8F9FA] pt-4 pb-8 px-4">
+      <div className="bg-gradient-to-b from-[#25B4D2] to-[#F8F9FA] pt-4 pb-8 px-4 lg:px-6">
         <div className="bg-white rounded-[20px] p-5 shadow-md">
           <h2 className="text-xl font-bold text-[#333333] mb-2">
             Serviços Completos
@@ -79,8 +79,8 @@ export default function ServicosPage() {
       </div>
 
       {/* Lista de serviços */}
-      <div className="px-4 -mt-4">
-        <div className="grid grid-cols-1 gap-3">
+      <div className="px-4 lg:px-6 -mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
           {services.map((service) => (
             <Card key={service.id} shadow="sm" className="flex items-start gap-4">
               <div className={`w-14 h-14 ${service.cor} rounded-[14px] flex items-center justify-center flex-shrink-0`}>
@@ -96,7 +96,7 @@ export default function ServicosPage() {
       </div>
 
       {/* CTA */}
-      <div className="px-4 mt-6 mb-4">
+      <div className="px-4 lg:px-6 mt-6 mb-4">
         <div className="bg-[#25B4D2] rounded-[20px] p-5 text-center text-white">
           <h3 className="text-lg font-bold mb-2">Precisa de um orçamento?</h3>
           <p className="text-sm opacity-90 mb-3">

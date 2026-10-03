@@ -98,10 +98,10 @@ export default function RegisterPage({ onNavigate }: RegisterPageProps) {
   };
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 lg:pb-8">
       <Header title="Criar Conta" showBack onBack={() => step > 1 ? setStep(step - 1) : onNavigate('login')} />
       
-      <div className="px-4 py-6">
+      <div className="px-4 lg:px-6 py-6 max-w-md mx-auto">
         {/* Progress indicator */}
         <div className="flex items-center gap-2 mb-6">
           <div className={`flex-1 h-1.5 rounded-full ${step >= 1 ? 'bg-[#25B4D2]' : 'bg-[#E0E0E0]'}`} />
