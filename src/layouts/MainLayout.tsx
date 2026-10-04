@@ -18,6 +18,7 @@ export default function MainLayout() {
   const navLinks = [
     { to: '/', label: 'Início' },
     { to: '/produtos', label: 'Produtos' },
+    { to: '/cotacao', label: 'Cotação B2B' },
     { to: '/servicos', label: 'Serviços' },
     { to: '/sobre', label: 'Sobre' },
     { to: '/contato', label: 'Contato' },
@@ -208,6 +209,7 @@ export default function MainLayout() {
               <h4 className="font-semibold mb-3 text-sm">Links</h4>
               <ul className="space-y-1 text-sm text-white/70">
                 <li><Link to="/produtos" className="hover:text-white">Produtos</Link></li>
+                <li><Link to="/cotacao" className="hover:text-white">Cotação B2B</Link></li>
                 <li><Link to="/servicos" className="hover:text-white">Serviços</Link></li>
                 <li><Link to="/sobre" className="hover:text-white">Sobre</Link></li>
               </ul>

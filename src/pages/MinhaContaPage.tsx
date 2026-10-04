@@ -8,6 +8,8 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import MeusPedidosPage from './MeusPedidosPage';
 import PedidoDetalhePage from './PedidoDetalhePage';
+import MinhasCotacoesPage from './MinhasCotacoesPage';
+import CotacaoDetalhePage from './CotacaoDetalhePage';
 
 export default function MinhaContaPage() {
   const { userProfile, logout } = useAuth();
@@ -127,13 +129,27 @@ export default function MinhaContaPage() {
                 </div>
               </Card>
             </Link>
-            <Card shadow="sm" className="p-4 flex items-center gap-3">
-              <span className="text-2xl">📋</span>
-              <div>
-                <p className="font-medium text-[#333]">Cotações</p>
-                <p className="text-xs text-[#666]">Em breve</p>
-              </div>
-            </Card>
+            {userProfile?.tipo === 'empresa' ? (
+              <Link to="/minha-conta/cotacoes">
+                <Card shadow="sm" className="p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
+                  <span className="text-2xl">📋</span>
+                  <div>
+                    <p className="font-medium text-[#333]">Minhas Cotações</p>
+                    <p className="text-xs text-[#666]">Gerencie suas cotações B2B</p>
+                  </div>
+                </Card>
+              </Link>
+            ) : (
+              <Link to="/cotacao">
+                <Card shadow="sm" className="p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
+                  <span className="text-2xl">📋</span>
+                  <div>
+                    <p className="font-medium text-[#333]">Cotação B2B</p>
+                    <p className="text-xs text-[#666]">Solicite cotação para sua empresa</p>
+                  </div>
+                </Card>
+              </Link>
+            )}
           </div>
 
           {/* Logout */}
@@ -144,6 +160,8 @@ export default function MinhaContaPage() {
       } />
       <Route path="pedidos" element={<MeusPedidosPage />} />
       <Route path="pedidos/:orderId" element={<PedidoDetalhePage />} />
+      <Route path="cotacoes" element={<MinhasCotacoesPage />} />
+      <Route path="cotacoes/:quotationId" element={<CotacaoDetalhePage />} />
     </Routes>
   );
 }

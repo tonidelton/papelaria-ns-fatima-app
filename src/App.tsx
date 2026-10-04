@@ -12,6 +12,8 @@ import CheckoutPage from './pages/CheckoutPage';
 import PedidoConfirmacaoPage from './pages/PedidoConfirmacaoPage';
 import LoginPage from './pages/LoginPage';
 import CadastroPage from './pages/CadastroPage';
+import CotacaoPage from './pages/CotacaoPage';
+import CotacaoConfirmacaoPage from './pages/CotacaoConfirmacaoPage';
 import MinhaContaPage from './pages/MinhaContaPage';
 import ServicosPage from './pages/ServicosPage';
 import SobrePage from './pages/SobrePage';
@@ -57,6 +59,8 @@ function AppRoutes() {
         <Route path="contato" element={<ContatoPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="cadastro" element={<CadastroPage />} />
+        <Route path="cotacao" element={<CotacaoPage />} />
+        <Route path="cotacao-confirmacao/:quotationId" element={<CotacaoConfirmacaoPage />} />
         <Route path="minha-conta/*" element={
           <ProtectedRoute><MinhaContaPage /></ProtectedRoute>
         } />

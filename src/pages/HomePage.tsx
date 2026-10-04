@@ -126,21 +126,43 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA B2B */}
       <section className="max-w-7xl mx-auto px-4 lg:px-6 py-10 sm:py-12">
-        <div className="bg-gradient-to-r from-[#C6A46A] to-[#A8894F] rounded-2xl p-6 sm:p-10 text-white text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-3">Precisa de um orçamento?</h2>
-          <p className="text-base sm:text-lg opacity-90 mb-6 max-w-xl mx-auto">
-            Entre em contato pelo WhatsApp para solicitar orçamentos personalizados para sua empresa.
-          </p>
-          <a
-            href="https://wa.me/5500000000000"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#C6A46A] rounded-lg font-semibold hover:bg-white/90 transition-colors"
-          >
-            <span>💬</span> Falar no WhatsApp
-          </a>
+        <div className="bg-gradient-to-br from-[#C6A46A] to-[#A8894F] rounded-2xl p-6 sm:p-10 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+          <div className="relative z-10 flex flex-col lg:flex-row items-center gap-6">
+            <div className="flex-1 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full text-xs font-semibold mb-3">
+                <span>💼</span> B2B - Para Empresas
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3">Solicite uma Cotação Personalizada</h2>
+              <p className="text-base sm:text-lg opacity-90 mb-4 max-w-xl">
+                Precisa de grandes quantidades? Nossa equipe preparará uma proposta especial para sua empresa com condições diferenciadas.
+              </p>
+              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                <Link
+                  to="/cotacao"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#C6A46A] rounded-lg font-semibold hover:bg-white/90 transition-colors"
+                >
+                  <span>📋</span> Solicitar Cotação
+                </Link>
+                <a
+                  href="https://wa.me/5500000000000"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 text-white rounded-lg font-semibold hover:bg-white/30 transition-colors"
+                >
+                  <span>💬</span> Falar no WhatsApp
+                </a>
+              </div>
+            </div>
+            <div className="hidden lg:block">
+              <div className="w-32 h-32 bg-white/10 rounded-2xl flex items-center justify-center">
+                <span className="text-6xl">📊</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
