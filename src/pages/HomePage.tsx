@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
+import ProductImage3D from '../components/ProductImage3D';
 import { useCart } from '../contexts/CartContext';
 import { mockProducts, productEmojis } from '../data/mockData';
 import { Product } from '../types';
@@ -63,12 +64,15 @@ export default function HomePage() {
           {featuredProducts.map((p) => (
             <Card key={p.id} shadow="sm" className="overflow-hidden p-0 group">
               <Link to={`/produtos/${p.slug}`} className="block">
-                <div className="bg-[#F8F9FA] h-28 sm:h-32 lg:h-36 flex items-center justify-center relative">
-                  <span className="text-4xl sm:text-5xl group-hover:scale-110 transition-transform">
-                    {productEmojis[p.id] || '📦'}
-                  </span>
+                <div className="bg-[#F8F9FA] h-28 sm:h-32 lg:h-36 relative">
+                  <ProductImage3D 
+                    emoji={productEmojis[p.id] || '📦'}
+                    className="w-full h-full"
+                    intensity={0.4}
+                    scale={1.1}
+                  />
                   {p.estoque === 0 && (
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center pointer-events-none">
                       <span className="bg-[#C62828] text-white text-xs font-bold px-2 py-1 rounded">ESGOTADO</span>
                     </div>
                   )}

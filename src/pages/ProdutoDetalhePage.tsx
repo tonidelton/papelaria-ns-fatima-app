@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Card from '../components/Card';
 import Button from '../components/Button';
+import ProductImage3D from '../components/ProductImage3D';
 import { useCart } from '../contexts/CartContext';
 import { mockProducts, productEmojis } from '../data/mockData';
 import { Product } from '../types';
@@ -61,10 +62,15 @@ export default function ProdutoDetalhePage() {
         {/* Galeria */}
         <div>
           <Card shadow="md" className="overflow-hidden p-0 mb-3">
-            <div className="bg-[#F8F9FA] h-64 sm:h-80 lg:h-[450px] flex items-center justify-center relative">
-              <span className="text-8xl sm:text-9xl">{gallery[activeImage]}</span>
+            <div className="bg-[#F8F9FA] h-64 sm:h-80 lg:h-[450px] relative">
+              <ProductImage3D 
+                emoji={gallery[activeImage]}
+                className="w-full h-full"
+                intensity={0.5}
+                scale={1.15}
+              />
               {isOutOfStock && (
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center pointer-events-none">
                   <span className="bg-[#C62828] text-white text-lg font-bold px-4 py-2 rounded">ESGOTADO</span>
                 </div>
               )}
@@ -76,11 +82,16 @@ export default function ProdutoDetalhePage() {
                 <button
                   key={idx}
                   onClick={() => setActiveImage(idx)}
-                  className={`w-16 h-16 bg-[#F8F9FA] rounded-lg flex items-center justify-center flex-shrink-0 border-2 transition-colors ${
-                    activeImage === idx ? 'border-[#25B4D2]' : 'border-transparent'
+                  className={`w-16 h-16 bg-[#F8F9FA] rounded-lg flex-shrink-0 border-2 transition-all overflow-hidden ${
+                    activeImage === idx ? 'border-[#25B4D2] shadow-md' : 'border-transparent hover:border-[#25B4D2]/50'
                   }`}
                 >
-                  <span className="text-2xl">{img}</span>
+                  <ProductImage3D 
+                    emoji={img}
+                    className="w-full h-full"
+                    intensity={0.3}
+                    scale={1.05}
+                  />
                 </button>
               ))}
             </div>
