@@ -1,0 +1,39 @@
+{
+  "name": "Papelaria N. Sr.ª de Fátima",
+  "short_name": "Papelaria PF",
+  "description": "Tudo para sua papelaria, escritório e escola",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8F9FA",
+  "theme_color": "#25B4D2",
+  "lang": "pt-BR",
+  "categories": ["business", "shopping", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Meus Pedidos",
+      "url": "/minha-conta/pedidos",
+      "description": "Acompanhe seus pedidos"
+    },
+    {
+      "name": "Produtos",
+      "url": "/produtos",
+      "description": "Ver todos os produtos"
+    }
+  ]
+}
